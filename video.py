@@ -26,13 +26,13 @@ while 1:
 		if not ret:
 			print("Cannot connect to camera")
 			pass
-		
+
 		img = image.transpose(2,0,1)
 		c, h, w = img.shape[0], img.shape[1], img.shape[2]
-		
+
 		data = img.ravel()/255.0
 		data = np.ascontiguousarray(data, dtype=np.float32)
-		outputs = pyyolo.detect(w, h, c, data, thresh, hier_thresh)	
+		outputs = pyyolo.detect(w, h, c, data, thresh, hier_thresh)
 
 
 	for output in outputs:
