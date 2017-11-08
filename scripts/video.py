@@ -1,9 +1,12 @@
+#!/usr/bin/env python
+
+import rospy
 import pyyolo
 import numpy as np
 import sys
 import cv2
 
-darknet_path = 'pyyolo/darknet'
+darknet_path = '../pyyolo/darknet'
 datacfg = 'cfg/coco.data'
 cfgfile = 'cfg/tiny-yolo.cfg'
 weightfile = '../tiny-yolo.weights'

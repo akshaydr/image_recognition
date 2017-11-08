@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   rviz
   std_msgs
+	usb_cam
 )
 
 ## System dependencies are found with CMake's conventions
