@@ -1,0 +1,3 @@
+[submodule "pyyolo"]
+	path = pyyolo
+	url = https://github.com/digitalbrain79/pyyolo.git
