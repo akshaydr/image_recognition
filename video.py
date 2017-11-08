@@ -3,7 +3,7 @@ import numpy as np
 import sys
 import cv2
 
-darknet_path = './darknet'
+darknet_path = 'pyyolo/darknet'
 datacfg = 'cfg/coco.data'
 cfgfile = 'cfg/tiny-yolo.cfg'
 weightfile = '../tiny-yolo.weights'
@@ -43,7 +43,6 @@ while 1:
 		cv2.circle(image,(x, y), 4, (0,255,0), -1)
 
 	cv2.imshow("Video",image)
-
 
 	if cv2.waitKey(1) & 0xFF == ord('q'):
 		break
