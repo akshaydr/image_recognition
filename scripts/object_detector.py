@@ -51,7 +51,7 @@ def image_handler(img_msg):
 
 if __name__ == "__main__":
     rospy.init_node('server')
-    s = rospy.Service('my_service', SetBool, handle_request)
+    s = rospy.Service('detect', SetBool, handle_request)
     rospy.Subscriber('/camera/image_raw', Image, image_handler)
 
     pyyolo.init(darknet_path, datacfg, cfgfile, weightfile)
