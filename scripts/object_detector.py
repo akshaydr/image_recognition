@@ -35,7 +35,6 @@ def detect():
 def handle_request(req):
     print ("Recieved",req)
     r = detect()
-    print(r)
     if(len(r) == 0):
         return SetBoolResponse(False, str(r))
     else:
