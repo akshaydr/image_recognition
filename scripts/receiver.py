@@ -7,12 +7,14 @@ import numpy as np
 from std_srvs.srv import *
 from sensor_msgs.msg import Image
 import ast
+from std_msgs.msg import Int32
 
 bounds = None
 image = None
 
 mousex = 0
 mousey = 0
+obj_dist = 0
 
 def mousePosition(event,x,y,flags,param):
     if event == cv2.EVENT_MOUSEMOVE:
@@ -29,6 +31,8 @@ def draw(img_msg):
             cv2.rectangle(image,(output['left'], output['top']), (output['right'], output['bottom']),(0,255,0),3)
             if (mousex > output['left'] and mousex < output['right'] and mousey > output['top'] and mousey < output['bottom']):
                 print ("Selected", output['class'])
+                obj_dist = output['left'] + output['right'])/2
+                pub.publish(obj_dist)
             # x = (output['left'] + output['right']) /2
             # y = (output['top'] + output['bottom']) /2
             # cv2.circle(image,(x, y), 4, (0,255,0), -1)
@@ -55,6 +59,7 @@ if __name__ == "__main__":
     rospy.wait_for_service('detect')
 
     rospy.Subscriber('/camera/image_raw', Image, draw)
+    pub = rospy.Publisher('driver', Int32, queue_size=10)
     # callDetector()
 
     while not rospy.is_shutdown():
