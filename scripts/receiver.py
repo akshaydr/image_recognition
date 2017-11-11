@@ -31,7 +31,7 @@ def draw(img_msg):
             cv2.rectangle(image,(output['left'], output['top']), (output['right'], output['bottom']),(0,255,0),3)
             if (mousex > output['left'] and mousex < output['right'] and mousey > output['top'] and mousey < output['bottom']):
                 print ("Selected", output['class'])
-                obj_dist = output['left'] + output['right'])/2
+                obj_dist = (output['left'] + output['right'])/2
                 pub.publish(obj_dist)
             # x = (output['left'] + output['right']) /2
             # y = (output['top'] + output['bottom']) /2
