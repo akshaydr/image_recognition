@@ -8,6 +8,7 @@ from std_srvs.srv import *
 from sensor_msgs.msg import Image
 import ast
 from std_msgs.msg import Int32
+from std_msgs.msg import Bool
 
 bounds = None
 image = None
@@ -15,6 +16,9 @@ image = None
 mousex = 0
 mousey = 0
 obj_dist = 0
+
+call_val = False
+prev_call_val = False
 
 def mousePosition(event,x,y,flags,param):
     if event == cv2.EVENT_MOUSEMOVE:
@@ -53,14 +57,23 @@ def on_mouse(event, x, y, flags, params):
         mousex = x
         mousey = y
 
+def detector_callback(msg):
+    call_val = msg.data
+    if (prev_call_val != call_val)
+        if (call_val == True):
+            callDetector()
+        prev_call_val = call_val
+
 if __name__ == "__main__":
     global mousey, mousex
     rospy.init_node('Receiver')
     rospy.wait_for_service('detect')
 
     rospy.Subscriber('/camera/image_raw', Image, draw)
+    rospy.Subscriber('call_detector', Bool, detector_callback)
     pub = rospy.Publisher('driver', Int32, queue_size=10)
     # callDetector()
+
 
     while not rospy.is_shutdown():
         if not image == None:
@@ -69,14 +82,14 @@ if __name__ == "__main__":
             cv2.imshow('real image', image)
         #     cv2.imshow('cv_img', image)
 
-        key = cv2.waitKey(1) & 0xFF
-
-        if key == ord('q'):
-            break
-        if key == ord('r'):
-            callDetector()
-            mousex = 0
-            mousey = 0
+        # key = cv2.waitKey(1) & 0xFF
+        #
+        # if key == ord('q'):
+        #     break
+        # if key == ord('r'):
+        #     callDetector()
+        #     mousex = 0
+        #     mousey = 0
 
 
     cv2.destroyAllWindows()

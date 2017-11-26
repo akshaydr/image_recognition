@@ -9,7 +9,7 @@ if RPI:
     import RPi.GPIO as GPIO
 
 # PWM pins are 12, 13, 18, 19, 40
-
+speed = 1
 if RPI:
     GPIO.setmode(GPIO.BOARD)
 
@@ -51,35 +51,78 @@ if RPI:
 else :
     print("Simulated setup done!")
 
-def callback(msg):
-    rospy.loginfo(msg.data)
+def movebot():
     if RPI:
         if (msg.data > 320):
             pwm1.start(50)
             pwm2.start(50)
             pwm3.start(50)
             pwm4.start(50)
+            GPIO.output(M1dir, GPIO.LOW)
+            GPIO.output(M2dir, GPIO.LOW)
+            GPIO.output(M3dir, GPIO.LOW)
+            GPIO.output(M4dir, GPIO.LOW)
+            sleep(1)
+            # Move bot left by 15 degree
             GPIO.output(M1dir, GPIO.HIGH)
             GPIO.output(M2dir, GPIO.HIGH)
             GPIO.output(M3dir, GPIO.LOW)
             GPIO.output(M4dir, GPIO.LOW)
-            sleep(0.8)
-            # Move bot left by 15 degree
+
+            sleep(1)
+
+            pwm1.stop()
+            pwm2.stop()
+            pwm3.stop()
+            pwm4.stop()
+            pub.publish(True)
+
         if (msg.data < 320):
             pwm1.start(50)
             pwm2.start(50)
             pwm3.start(50)
             pwm4.start(50)
-            GPIO.output(M1dir, GPIO.LOW)
-            GPIO.output(M2dir, GPIO.LOW)
+            GPIO.output(M1dir, GPIO.HIGH)
+            GPIO.output(M2dir, GPIO.HIGH)
             GPIO.output(M3dir, GPIO.HIGH)
             GPIO.output(M4dir, GPIO.HIGH)
-            sleep(0.8)
+
+            sleep(1)
             # Move bot right by 15 degree
+            GPIO.output(M1dir, GPIO.HIGH)
+            GPIO.output(M2dir, GPIO.HIGH)
+            GPIO.output(M3dir, GPIO.LOW)
+            GPIO.output(M4dir, GPIO.LOW)
+
+            sleep(1)
+
+            pwm1.stop()
+            pwm2.stop()
+            pwm3.stop()
+            pwm4.stop()
+            pub.publish(True)
+
+        else:
+            pwm1.stop()
+            pwm2.stop()
+            pwm3.stop()
+            pwm4.stop()
+            pub.publish(True)
+            
+        pub.publish(False)
+
+def callback(msg):
+    rospy.loginfo(msg.data)
 
 if __name__ == '__main__':
   rospy.init_node('driver')
   rospy.Subscriber('driver', Int32, callback)
+  pub = rospy.Publisher('call_detector', Bool, queue_size=10)
+  rate = rospy.Rate(60) #60 Hz
 
   while not rospy.is_shutdown():
-    rospy.spin()
+    movebot()
+    rate.sleep()
+
+  if RPI:
+      GPIO.cleanup()
