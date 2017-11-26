@@ -6,7 +6,7 @@ import rospy
 from std_msgs.msg import Int32
 
 if RPI:
-import RPi.GPIO as
+    import RPi.GPIO as GPIO
 
 # PWM pins are 12, 13, 18, 19, 40
 
@@ -52,28 +52,30 @@ else :
     print("Simulated setup done!")
 
 def callback(msg):
-    if (msg.data > 320):
-        pwm1.start(50)
-        pwm2.start(50)
-        pwm3.start(50)
-        pwm4.start(50)
-        GPIO.output(M1dir, GPIO.HIGH)
-        GPIO.output(M2dir, GPIO.HIGH)
-        GPIO.output(M3dir, GPIO.LOW)
-        GPIO.output(M4dir, GPIO.LOW)
-        sleep(0.8)
-        # Move bot left by 15 degree
-    if (msg.data < 320):
-        pwm1.start(50)
-        pwm2.start(50)
-        pwm3.start(50)
-        pwm4.start(50)
-        GPIO.output(M1dir, GPIO.LOW)
-        GPIO.output(M2dir, GPIO.LOW)
-        GPIO.output(M3dir, GPIO.HIGH)
-        GPIO.output(M4dir, GPIO.HIGH)
-        sleep(0.8)
-        # Move bot right by 15 degree
+    rospy.loginfo(msg.data)
+    if RPI:
+        if (msg.data > 320):
+            pwm1.start(50)
+            pwm2.start(50)
+            pwm3.start(50)
+            pwm4.start(50)
+            GPIO.output(M1dir, GPIO.HIGH)
+            GPIO.output(M2dir, GPIO.HIGH)
+            GPIO.output(M3dir, GPIO.LOW)
+            GPIO.output(M4dir, GPIO.LOW)
+            sleep(0.8)
+            # Move bot left by 15 degree
+        if (msg.data < 320):
+            pwm1.start(50)
+            pwm2.start(50)
+            pwm3.start(50)
+            pwm4.start(50)
+            GPIO.output(M1dir, GPIO.LOW)
+            GPIO.output(M2dir, GPIO.LOW)
+            GPIO.output(M3dir, GPIO.HIGH)
+            GPIO.output(M4dir, GPIO.HIGH)
+            sleep(0.8)
+            # Move bot right by 15 degree
 
 if __name__ == '__main__':
   rospy.init_node('driver')
