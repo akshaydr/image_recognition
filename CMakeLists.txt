@@ -10,7 +10,6 @@ project(image_recognition)
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   rospy
-  rviz
   std_msgs
 	usb_cam
 )
